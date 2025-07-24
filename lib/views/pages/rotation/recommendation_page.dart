@@ -20,7 +20,7 @@ class RecommendationPage extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.transparent,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back, color: AppColors.primary), // couleur verte foncée
           onPressed: () => Get.back(),
         ),
         title: Row(
