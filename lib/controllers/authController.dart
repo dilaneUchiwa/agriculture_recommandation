@@ -51,8 +51,8 @@ class AuthController extends GetxController {
           }
         } else if (user != null && !user.emailVerified) {
           // Email non vérifié
-          if (Get.currentRoute != AppRoutes.emailVerification) {
-            Get.offAllNamed(AppRoutes.emailVerification);
+          if (Get.currentRoute != AppRoutes.home) {
+            Get.offAllNamed(AppRoutes.home);
           }
         }
         // Ne pas rediriger vers auth si l'utilisateur est null
@@ -98,7 +98,7 @@ class AuthController extends GetxController {
       if (user != null) {
         _clearFields();
         // Redirect to email verification page
-        Get.offAllNamed(AppRoutes.emailVerification);
+        Get.offAllNamed(AppRoutes.home);
         Get.offAllNamed(AppRoutes.home);
       }
     } finally {

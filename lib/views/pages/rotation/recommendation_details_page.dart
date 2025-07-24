@@ -7,6 +7,7 @@ import 'package:agriculture_recommandation/domain/models/rotation_models.dart';
 import 'package:agriculture_recommandation/domain/models/user_recommendation.dart';
 import 'package:agriculture_recommandation/views/components/common/app_logo.dart';
 import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 /// Page de détails des recommandations
 class RecommendationDetailsPage extends StatelessWidget {
@@ -14,6 +15,9 @@ class RecommendationDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Initialiser la locale pour les dates françaises
+    initializeDateFormatting('fr_FR', null);
+    
     final arguments = Get.arguments as Map<String, dynamic>?;
     final RotationController controller = arguments?['controller'] ?? Get.put(RotationController());
     final UserRecommendation? existingRecommendation = arguments?['existingRecommendation'];
@@ -302,7 +306,7 @@ class RecommendationDetailsPage extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            '${culture.totalScore.toStringAsFixed(1)}%',
+            '${culture.totalScore.toStringAsFixed(2)}%',
             style: TextStyle(
               color: color,
               fontWeight: FontWeight.bold,
@@ -355,7 +359,7 @@ class RecommendationDetailsPage extends StatelessWidget {
                       Text(
                         culture.culture,
                         style: const TextStyle(
-                          fontSize: 24,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -379,7 +383,7 @@ class RecommendationDetailsPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(25),
                   ),
                   child: Text(
-                    '${culture.totalScore.toStringAsFixed(1)}%',
+                    '${culture.totalScore.toStringAsFixed(2)}%',
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -425,6 +429,29 @@ class RecommendationDetailsPage extends StatelessWidget {
             ),
             
             const SizedBox(height: 24),
+            // Prix prédit et date de récolte
+            if (culture.predictedPrice != null && culture.readyDate != null)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Prix prédit : ${culture.predictedPrice!.toStringAsFixed(2)} FCFA',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    'Date de récolte estimée :   ~${DateFormat('MMMM yyyy', 'fr_FR').format(DateTime.parse(culture.readyDate!))}',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                ],
+              ),
             
             // Analyses détaillées avec graphiques
             Text(
@@ -602,12 +629,15 @@ class RecommendationDetailsPage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                _getProgressLabel(value, isNegative),
-                style: TextStyle(
-                  fontSize: 12,
-                  color: color,
-                  fontWeight: FontWeight.w600,
+              Expanded(
+                child: Text(
+                  _getProgressLabel(value, isNegative),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: color,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               Container(
@@ -617,7 +647,7 @@ class RecommendationDetailsPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
-                  '${value.toStringAsFixed(1)}%',
+                  '${value.toStringAsFixed(2)}%',
                   style: const TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.bold,
@@ -852,7 +882,7 @@ class RecommendationDetailsPage extends StatelessWidget {
           
           _buildSynthesisMetric(
             'Score moyen global',
-            '${_calculateAverageScore(sortedCultures).toStringAsFixed(1)}%',
+            '${_calculateAverageScore(sortedCultures).toStringAsFixed(2)}%',
             _getScoreColor(_calculateAverageScore(sortedCultures)),
             Icons.trending_up_rounded,
           ),

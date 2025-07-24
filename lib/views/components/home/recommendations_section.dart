@@ -197,7 +197,7 @@ class RecommendationsSection extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
-                          '${bestCulture.totalScore.toStringAsFixed(0)}%',
+                          '${bestCulture.totalScore.toStringAsFixed(2)}%',
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 12,

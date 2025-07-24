@@ -32,4 +32,70 @@ class RotationService {
       return null;
     }
   }
+
+  /// Appeler l'API de prédiction de prix pour le produit sélectionné
+  static Future<double?> predictPrice(RotationInput input) async {
+
+    if (input.cultureForPrice == null || input.regionForPrice == null || input.durationForPrice == null) {
+      print('Données insuffisantes pour la prédiction de prix');
+      return null;
+    }
+    
+    try {
+      final pricePayload = input.toJsonWithPrice();
+      final Dio dio = Dio();
+      final response = await dio.post(
+        '$baseUrl/predict',
+        data: pricePayload,
+        options: Options(
+          headers: {'Content-Type': 'application/json'},
+        ),
+      );
+      if (response.statusCode == 200 && response.data != null && response.data['prediction'] != null) {
+        final predictionList = response.data['prediction'];
+        if (predictionList is List && predictionList.isNotEmpty) {
+          return (predictionList.first as num).toDouble();
+        }
+      }
+      return null;
+    } catch (e) {
+      print('Erreur lors de la prédiction du prix: $e');
+      return null;
+    }
+  }
+
+  /// Prédire le prix à partir d'un payload générique (pour chaque culture recommandée)
+  static Future<double?> predictPriceFromPayload(Map<String, dynamic> pricePayload) async {
+
+    if (pricePayload.isEmpty || 
+        pricePayload['product'] == null || 
+        pricePayload['region'] == null || 
+        pricePayload['month'] == null || 
+        pricePayload['year'] == null) {
+      print('Données insuffisantes pour la prédiction de prix');
+      return null;
+    }
+
+
+    try {
+      final Dio dio = Dio();
+      final response = await dio.post(
+        '$baseUrl/predict',
+        data: pricePayload,
+        options: Options(
+          headers: {'Content-Type': 'application/json'},
+        ),
+      );
+      if (response.statusCode == 200 && response.data != null && response.data['prediction'] != null) {
+        final predictionList = response.data['prediction'];
+        if (predictionList is List && predictionList.isNotEmpty) {
+          return (predictionList.first as num).toDouble();
+        }
+      }
+      return null;
+    } catch (e) {
+      print('Erreur lors de la prédiction du prix: $e');
+      return null;
+    }
+  }
 }

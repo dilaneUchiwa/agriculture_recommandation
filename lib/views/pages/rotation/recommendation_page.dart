@@ -99,16 +99,6 @@ class RecommendationPage extends StatelessWidget {
             ),
           ),
           
-          const SizedBox(height: 32),
-          
-          const Text(
-            'Informations de votre terrain',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          
           const SizedBox(height: 8),
           
           Text(

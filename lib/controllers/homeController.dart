@@ -171,7 +171,7 @@ class Homecontroller extends GetxController {
       // onRefreshBalance();
     } else if (user != null && !user.emailVerified) {
       // Email non vérifié, rediriger vers la vérification
-      Get.offAllNamed(AppRoutes.emailVerification);
+      Get.offAllNamed(AppRoutes.home);
     } else {
       // Utilisateur non connecté
       logoutUser('logout_session_expired'.tr);

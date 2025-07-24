@@ -21,7 +21,7 @@ class AppRouter {
       page: () => ModernAuthPage(),
     ),
     GetPage(
-      name: AppRoutes.emailVerification,
+      name: AppRoutes.home,
       page: () => const EmailVerificationPage(),
     ),
     // Routes pour les recommandations

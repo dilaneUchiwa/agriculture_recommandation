@@ -24,7 +24,15 @@ class UserRecommendation {
 
   factory UserRecommendation.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
-    
+    DateTime createdAt;
+    final rawCreatedAt = data['createdAt'];
+    if (rawCreatedAt is Timestamp) {
+      createdAt = rawCreatedAt.toDate();
+    } else if (rawCreatedAt is String) {
+      createdAt = DateTime.parse(rawCreatedAt);
+    } else {
+      createdAt = DateTime.now();
+    }
     return UserRecommendation(
       id: doc.id,
       userId: data['userId'] ?? '',
@@ -34,8 +42,7 @@ class UserRecommendation {
       recommendedCultures: (data['recommendedCultures'] as List<dynamic>?)
           ?.map((item) => Culture.fromJson(item))
           .toList() ?? [],
-      createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      status: data['status'] ?? 'active',
+      createdAt: createdAt,
     );
   }
 

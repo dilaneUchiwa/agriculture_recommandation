@@ -59,7 +59,7 @@ class SplashController extends GetxController {
         Get.offAllNamed(AppRoutes.home);
       } else {
         // Email not verified, go to verification page
-        Get.offAllNamed(AppRoutes.emailVerification);
+        Get.offAllNamed(AppRoutes.home);
       }
     } else {
       // User not signed in, go to authentication

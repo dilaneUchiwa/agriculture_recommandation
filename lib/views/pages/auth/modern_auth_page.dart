@@ -284,15 +284,30 @@ class ModernAuthPage extends StatelessWidget {
                   onChanged: (_) => authController.toggleRememberMe(),
                   activeColor: AppColors.primary,
                 )),
-                const Text('Se souvenir de moi'),
-                const Spacer(),
-                TextButton(
-                  onPressed: () => _showForgotPasswordDialog(context),
+                Flexible(
                   child: Text(
-                    'Mot de passe oublié ?',
-                    style: TextStyle(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w500,
+                    'Se souvenir de moi',
+                    style: const TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Flexible(
+                  child: TextButton(
+                    onPressed: () => _showForgotPasswordDialog(context),
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    child: Text(
+                      'Mot de passe oublié ?',
+                      style: TextStyle(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12,
+                      ),
                     ),
                   ),
                 ),

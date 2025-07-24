@@ -13,10 +13,20 @@ class RecommendationFirebaseService {
     required String regionName,
     required String climateName,
     required List<Culture> recommendedCultures,
+    double? predictedPrice,
+    DateTime? readyDate,
   }) async {
     try {
       final User? currentUser = FirebaseAuth.instance.currentUser;
       if (currentUser == null) return null;
+
+      // Ajout du prix prédit et de la période à chaque culture
+      final culturesWithExtras = recommendedCultures.map((c) {
+        final map = c.toJson();
+        map['predictedPrice'] = predictedPrice;
+        map['readyDate'] = readyDate?.toIso8601String();
+        return map;
+      }).toList();
 
       final recommendation = UserRecommendation(
         id: '',
@@ -30,11 +40,46 @@ class RecommendationFirebaseService {
 
       final docRef = await _firestore
           .collection(_collection)
-          .add(recommendation.toFirestore());
+          .add({
+            ...recommendation.toFirestore(),
+            'recommendedCultures': culturesWithExtras,
+          });
 
       return docRef.id;
     } catch (e) {
       print('Erreur lors de la sauvegarde de la recommandation: $e');
+      return null;
+    }
+  }
+
+  /// Sauvegarder une recommandation avec cultures enrichies (prix, période)
+  static Future<String?> saveRecommendationEnriched({
+    required String cultureName,
+    required String regionName,
+    required String climateName,
+    required List<Map<String, dynamic>> recommendedCultures,
+  }) async {
+    try {
+      final User? currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser == null) return null;
+
+      final recommendation = {
+        'userId': currentUser.uid,
+        'cultureName': cultureName,
+        'regionName': regionName,
+        'climateName': climateName,
+        'recommendedCultures': recommendedCultures,
+        'createdAt': DateTime.now().toIso8601String(),
+        'status': 'active',
+      };
+
+      final docRef = await _firestore
+          .collection(_collection)
+          .add(recommendation);
+
+      return docRef.id;
+    } catch (e) {
+      print('Erreur lors de la sauvegarde de la recommandation enrichie: $e');
       return null;
     }
   }

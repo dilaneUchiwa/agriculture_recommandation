@@ -334,7 +334,7 @@ class RotationDialog extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            '${culture.totalScore.toStringAsFixed(1)}%',
+            '${culture.totalScore.toStringAsFixed(2)}%',
             style: TextStyle(
               color: color,
               fontWeight: FontWeight.bold,
@@ -411,7 +411,7 @@ class RotationDialog extends StatelessWidget {
                     borderRadius: BorderRadius.circular(25),
                   ),
                   child: Text(
-                    '${culture.totalScore.toStringAsFixed(1)}%',
+                    '${culture.totalScore.toStringAsFixed(2)}%',
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -561,7 +561,7 @@ class RotationDialog extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  '${value.toStringAsFixed(1)}%',
+                  '${value.toStringAsFixed(2)}%',
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
