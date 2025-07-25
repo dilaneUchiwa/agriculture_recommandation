@@ -3,7 +3,7 @@ import 'package:agriculture_recommandation/domain/models/rotation_models.dart';
 import 'package:agriculture_recommandation/controllers/errorController.dart';
 
 class RotationService {
-  static const String baseUrl = 'http://10.0.2.2'; // Remplacer par l'URL réelle
+  static const String baseUrl = 'http://54.37.83.212:5200'; // Remplacer par l'URL réelle
   static const String rotationEndpoint = '/api/v1/rotation';
 
   static Future<RotationResponse?> getRotationRecommendations(
